@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Literary Quote Challenge | Sign Up</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="page">
+  <main class="phone-shell">
+    <section class="screen-card">
+      <a class="back-link" href="login.html">&larr; Nazad</a>
+      <p class="topline">Literary Quote Challenge</p>
+      <h1 class="screen-title">Sign Up</h1>
+      <p class="page-copy left-copy">Kreiraj profil i udji u igru.</p>
+
+      <form id="signupForm" class="stack-form" data-redirect="mode.html">
+        <p class="form-message" id="signupMessage"></p>
+
+        <label class="field">
+          <span>Username</span>
+          <input type="text" name="username" placeholder="Odaberi username" />
+        </label>
+
+        <label class="field">
+          <span>E-mail adresa</span>
+          <input type="email" name="email" placeholder="unesi@email.com" />
+        </label>
+
+        <label class="field">
+          <span>Lozinka</span>
+          <input type="password" name="password" placeholder="Kreiraj lozinku" />
+        </label>
+
+        <label class="field">
+          <span>Potvrdi lozinku</span>
+          <input type="password" name="confirmPassword" placeholder="Ponovi lozinku" />
+        </label>
+
+        <button class="primary-button" type="submit">Prijavi se</button>
+      </form>
+
+      <a class="guest-link" href="mode.html">Pocni kao gost</a>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

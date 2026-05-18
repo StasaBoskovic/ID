@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Literary Quote Challenge | Log In</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="page">
+  <main class="phone-shell">
+    <section class="screen-card">
+      <a class="back-link" href="index.html">&larr; Nazad</a>
+      <p class="topline">Literary Quote Challenge</p>
+      <h1 class="screen-title">Log In</h1>
+      <p class="page-copy left-copy">Unesi mejl i lozinku da nastavis dalje.</p>
+
+      <form id="loginForm" class="stack-form" data-redirect="mode.html">
+        <p class="form-message" id="loginMessage"></p>
+
+        <label class="field">
+          <span>E-mail adresa</span>
+          <input type="email" name="email" placeholder="unesi@email.com" />
+        </label>
+
+        <label class="field">
+          <span>Lozinka</span>
+          <input type="password" name="password" placeholder="Unesi lozinku" />
+        </label>
+
+        <a class="text-link subtle-link" href="forgot-password.html">Zaboravio/la si lozinku?</a>
+
+        <button class="primary-button" type="submit">Uloguj se</button>
+      </form>
+
+      <p class="inline-note">
+        Nemas nalog?
+        <a class="text-link" href="signup.html">Prijavi se</a>
+      </p>
+
+      <a class="guest-link" href="mode.html">Pocni kao gost</a>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

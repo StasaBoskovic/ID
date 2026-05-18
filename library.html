@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Literary Quote Challenge | Izbor knjiga</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="page">
+  <main class="phone-shell phone-shell-wide">
+    <section class="screen-card">
+      <a class="back-link" href="mode.html">&larr; Nazad</a>
+      <p class="topline">Literary Quote Challenge</p>
+      <h1 class="screen-title">Izaberi knjige</h1>
+      <p class="page-copy left-copy">
+        Oznaci knjige koje zelis, pa klikni start da otvoris igru.
+      </p>
+
+      <div class="book-grid" id="bookGrid">
+        <button class="book-card" data-book-id="little-prince" type="button">
+          <span class="book-title">The Little Prince</span>
+          <span class="book-author">Antoine de Saint-Exupery</span>
+        </button>
+
+        <button class="book-card" data-book-id="pride-prejudice" type="button">
+          <span class="book-title">Pride and Prejudice</span>
+          <span class="book-author">Jane Austen</span>
+        </button>
+
+        <button class="book-card" data-book-id="hamlet" type="button">
+          <span class="book-title">Hamlet</span>
+          <span class="book-author">William Shakespeare</span>
+        </button>
+
+        <button class="book-card" data-book-id="hobbit" type="button">
+          <span class="book-title">The Hobbit</span>
+          <span class="book-author">J.R.R. Tolkien</span>
+        </button>
+
+        <button class="book-card" data-book-id="jane-eyre" type="button">
+          <span class="book-title">Jane Eyre</span>
+          <span class="book-author">Charlotte Bronte</span>
+        </button>
+
+        <button class="book-card" data-book-id="harry-potter" type="button">
+          <span class="book-title">Harry Potter</span>
+          <span class="book-author">J.K. Rowling</span>
+        </button>
+
+        <button class="book-card" data-book-id="great-gatsby" type="button">
+          <span class="book-title">The Great Gatsby</span>
+          <span class="book-author">F. Scott Fitzgerald</span>
+        </button>
+
+        <button class="book-card" data-book-id="wuthering-heights" type="button">
+          <span class="book-title">Wuthering Heights</span>
+          <span class="book-author">Emily Bronte</span>
+        </button>
+
+        <button class="book-card" data-book-id="frankenstein" type="button">
+          <span class="book-title">Frankenstein</span>
+          <span class="book-author">Mary Shelley</span>
+        </button>
+
+        <button class="book-card" data-book-id="little-women" type="button">
+          <span class="book-title">Little Women</span>
+          <span class="book-author">Louisa May Alcott</span>
+        </button>
+
+        <button class="book-card" data-book-id="secret-garden" type="button">
+          <span class="book-title">The Secret Garden</span>
+          <span class="book-author">Frances Hodgson Burnett</span>
+        </button>
+
+        <button class="book-card" data-book-id="anne-green-gables" type="button">
+          <span class="book-title">Anne of Green Gables</span>
+          <span class="book-author">L.M. Montgomery</span>
+        </button>
+
+        <button class="book-card" data-book-id="dorian-gray" type="button">
+          <span class="book-title">The Picture of Dorian Gray</span>
+          <span class="book-author">Oscar Wilde</span>
+        </button>
+
+        <button class="book-card" data-book-id="alice-wonderland" type="button">
+          <span class="book-title">Alice in Wonderland</span>
+          <span class="book-author">Lewis Carroll</span>
+        </button>
+
+        <button class="book-card" data-book-id="dracula" type="button">
+          <span class="book-title">Dracula</span>
+          <span class="book-author">Bram Stoker</span>
+        </button>
+
+        <button class="book-card" data-book-id="crime-punishment" type="button">
+          <span class="book-title">Crime and Punishment</span>
+          <span class="book-author">Fyodor Dostoevsky</span>
+        </button>
+
+        <button class="book-card" data-book-id="count-monte-cristo" type="button">
+          <span class="book-title">The Count of Monte Cristo</span>
+          <span class="book-author">Alexandre Dumas</span>
+        </button>
+      </div>
+
+      <p class="selection-note" id="selectionNote">Izabrano knjiga: 0</p>
+
+      <button class="primary-button" id="startSelectedButton" type="button" disabled>Start</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
