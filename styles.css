@@ -178,6 +178,62 @@ input {
   align-content: center;
 }
 
+.hero-brand {
+  width: fit-content;
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px 10px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03)),
+    rgba(255, 255, 255, 0.04);
+  box-shadow: var(--shadow-soft);
+}
+
+.hero-brand-mark {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  background:
+    linear-gradient(145deg, rgba(123, 57, 212, 0.98), rgba(42, 12, 84, 0.98));
+  border: 1px solid rgba(217, 167, 255, 0.26);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 16px 30px rgba(25, 8, 54, 0.32);
+}
+
+.hero-brand-mark span {
+  color: #fffaff;
+  font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.hero-brand-text {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.hero-brand-text strong {
+  font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-size: 1rem;
+  line-height: 1.15;
+}
+
+.hero-brand-text span {
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
 .hero-badge,
 .topline {
   width: fit-content;
@@ -1036,6 +1092,7 @@ input {
 }
 
 .leaderboard-main {
+  min-width: 0;
   display: grid;
   gap: 4px;
 }
@@ -1043,6 +1100,7 @@ input {
 .leaderboard-main strong {
   font-size: 1.2rem;
   line-height: 1.1;
+  overflow-wrap: anywhere;
 }
 
 .leaderboard-side {
@@ -1051,6 +1109,10 @@ input {
   gap: 10px 16px;
   grid-column: 1 / -1;
   color: var(--text-muted);
+}
+
+.leaderboard-side span {
+  overflow-wrap: anywhere;
 }
 
 .empty-board .leaderboard-main {
@@ -1190,6 +1252,10 @@ input {
 
   .page-home .hero-copy {
     justify-items: center;
+  }
+
+  .page-home .hero-brand {
+    margin-inline: auto;
   }
 
   .page-home .topline,
@@ -1408,6 +1474,31 @@ input {
     border-radius: 28px;
   }
 
+  .hero-brand {
+    width: 100%;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 20px;
+  }
+
+  .hero-brand-mark {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+  }
+
+  .hero-brand-mark span {
+    font-size: 1rem;
+  }
+
+  .hero-brand-text strong {
+    font-size: 0.94rem;
+  }
+
+  .hero-brand-text span {
+    font-size: 0.76rem;
+  }
+
   .game-name {
     font-size: clamp(2.5rem, 12vw, 3.8rem);
   }
@@ -1451,6 +1542,12 @@ input {
 
   .page-home .hero-copy {
     gap: 14px;
+  }
+
+  .page-home .hero-brand {
+    max-width: 340px;
+    justify-content: center;
+    text-align: left;
   }
 
   .page-home .topline,
@@ -1618,5 +1715,79 @@ input {
 
   .page-game .answers-grid .primary-button {
     padding-block: 12px;
+  }
+
+  .page-board .phone-shell {
+    align-items: stretch;
+    padding: 10px 8px 18px;
+  }
+
+  .page-board .screen-card {
+    padding: 18px 12px 20px;
+  }
+
+  .page-board .screen-title {
+    font-size: clamp(1.72rem, 8vw, 2.1rem);
+  }
+
+  .page-board .page-copy {
+    margin-bottom: 18px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .page-board .leaderboard-list {
+    gap: 12px;
+  }
+
+  .page-board .leaderboard-item {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    padding: 14px 12px;
+    border-radius: 20px;
+  }
+
+  .page-board .leaderboard-rank {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    font-size: 0.92rem;
+  }
+
+  .page-board .leaderboard-main strong {
+    font-size: 1.02rem;
+  }
+
+  .page-board .leaderboard-main span {
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .page-board .leaderboard-side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 2px;
+  }
+
+  .page-board .leaderboard-side span {
+    min-width: 0;
+    padding: 9px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+
+  .page-board .empty-board {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 400px) {
+  .page-board .leaderboard-side {
+    grid-template-columns: 1fr;
   }
 }
