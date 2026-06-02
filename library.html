@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Literary Quote Challenge | Pick Your Books</title>
-  <link rel="stylesheet" href="styles.css?v=20260602-2" />
+  <link rel="stylesheet" href="styles.css?v=20260602-3" />
 </head>
 <body class="page page-library">
   <main class="phone-shell phone-shell-wide">
@@ -21,6 +21,26 @@
       <p class="page-copy left-copy">
         Select the titles you want, then launch a game built from your own literary shelf.
       </p>
+
+      <div class="library-toolbar">
+        <label class="library-search" for="bookSearchInput">
+          <span class="library-search-label">Search the shelf</span>
+          <input
+            class="library-search-input"
+            id="bookSearchInput"
+            type="search"
+            placeholder="Type a title or author"
+            autocomplete="off"
+          />
+        </label>
+
+        <div class="selection-bar selection-bar-top">
+          <p class="selection-note" id="selectionNote">Choose at least one book to begin</p>
+          <button class="primary-button" id="startSelectedButton" type="button" disabled>Start Challenge</button>
+        </div>
+
+        <p class="search-status" id="searchStatus">Showing all available books.</p>
+      </div>
 
       <div class="book-grid" id="bookGrid">
         <button class="book-card" data-book-id="little-prince" type="button">
@@ -112,14 +132,10 @@
           <span class="book-author">Borisav Stankovic</span>
         </button>
       </div>
-
-      <div class="selection-bar">
-        <p class="selection-note" id="selectionNote">Choose at least one book to begin</p>
-        <button class="primary-button" id="startSelectedButton" type="button" disabled>Start Challenge</button>
-      </div>
+      <p class="empty-search-state" id="emptySearchState" hidden>No books match that search yet.</p>
     </section>
   </main>
 
-  <script src="script.js?v=20260602-2"></script>
+  <script src="script.js?v=20260602-3"></script>
 </body>
 </html>

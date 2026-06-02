@@ -668,6 +668,9 @@ function initModePage() {
 
 function initLibraryPage() {
   const bookGrid = document.getElementById("bookGrid");
+  const bookSearchInput = document.getElementById("bookSearchInput");
+  const searchStatus = document.getElementById("searchStatus");
+  const emptySearchState = document.getElementById("emptySearchState");
   const selectionNote = document.getElementById("selectionNote");
   const startSelectedButton = document.getElementById("startSelectedButton");
 
@@ -681,6 +684,12 @@ function initLibraryPage() {
   );
 
   const bookButtons = Array.from(bookGrid.querySelectorAll(".book-card"));
+  const searchableBooks = bookButtons.map((button) => ({
+    button,
+    searchValue: normalizeWord(
+      `${button.querySelector(".book-title")?.textContent || ""} ${button.querySelector(".book-author")?.textContent || ""}`
+    )
+  }));
 
   function updateSelectionState() {
     const selectedBooks = bookButtons
@@ -699,6 +708,35 @@ function initLibraryPage() {
     return selectedBooks;
   }
 
+  function updateSearchState() {
+    const rawQuery = bookSearchInput ? bookSearchInput.value.trim() : "";
+    const normalizedQuery = normalizeWord(rawQuery);
+    let visibleCount = 0;
+
+    searchableBooks.forEach(({ button, searchValue }) => {
+      const isMatch = !normalizedQuery || searchValue.includes(normalizedQuery);
+      button.hidden = !isMatch;
+
+      if (isMatch) {
+        visibleCount += 1;
+      }
+    });
+
+    if (searchStatus) {
+      if (!normalizedQuery) {
+        searchStatus.textContent = `Showing all ${bookButtons.length} books.`;
+      } else if (visibleCount === 1) {
+        searchStatus.textContent = `1 book matches "${rawQuery}".`;
+      } else {
+        searchStatus.textContent = `${visibleCount} books match "${rawQuery}".`;
+      }
+    }
+
+    if (emptySearchState) {
+      emptySearchState.hidden = visibleCount !== 0;
+    }
+  }
+
   bookButtons.forEach((button) => {
     if (selectedSet.has(button.dataset.bookId)) {
       button.classList.add("is-selected");
@@ -709,6 +747,10 @@ function initLibraryPage() {
       updateSelectionState();
     });
   });
+
+  if (bookSearchInput) {
+    bookSearchInput.addEventListener("input", updateSearchState);
+  }
 
   startSelectedButton.addEventListener("click", () => {
     const selectedBooks = updateSelectionState();
@@ -721,6 +763,7 @@ function initLibraryPage() {
   });
 
   updateSelectionState();
+  updateSearchState();
 }
 
 function initGamePage() {
