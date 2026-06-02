@@ -79,7 +79,9 @@ const QUOTES = [
 
 const BOOK_LOOKUP = Object.fromEntries(BOOKS.map((book) => [book.id, book]));
 const AUTHOR_POOL = [...new Set(BOOKS.map((book) => book.author))];
-const TIMER_SECONDS = 8;
+const TIMER_SECONDS = 20;
+const HINT_SHOW_WHEN_SECONDS_LEFT = 10;
+const HINT_FETCH_TIMEOUT_MS = 2500;
 
 function shuffle(array) {
   return array.slice().sort(() => Math.random() - 0.5);
@@ -300,6 +302,102 @@ function createQuestionBank(activeBooks) {
 function buildAnswerOptions(correctAuthor) {
   const decoys = shuffle(AUTHOR_POOL.filter((author) => author !== correctAuthor)).slice(0, 3);
   return shuffle([correctAuthor, ...decoys]);
+}
+
+function getAuthorInitials(authorName) {
+  return String(authorName)
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase())
+    .join(".");
+}
+
+function buildHintRequest(question, answerOptions) {
+  return {
+    type: question.type,
+    prompt: question.prompt,
+    bookTitle: question.bookTitle,
+    answerLabel: question.answerLabel,
+    answerOptions
+  };
+}
+
+function buildLocalHint(question, answerOptions = []) {
+  if (question.type === "fill") {
+    const answer = String(question.answerLabel || "");
+    const firstLetter = answer.charAt(0).toUpperCase();
+    const lastLetter = answer.charAt(answer.length - 1).toUpperCase();
+    return `Think of a ${answer.length}-letter word. It starts with "${firstLetter}" and ends with "${lastLetter}".`;
+  }
+
+  const initials = getAuthorInitials(question.answerLabel);
+  const removableOptions = shuffle(
+    answerOptions.filter((option) => option !== question.answerLabel)
+  ).slice(0, 2);
+  const eliminationText = removableOptions.length
+    ? ` You can rule out ${removableOptions.join(" and ")}.`
+    : "";
+
+  if (question.type === "title") {
+    return `Focus on the author whose initials are ${initials}.${eliminationText}`;
+  }
+
+  return `Think about the book "${question.bookTitle}". The author's initials are ${initials}.${eliminationText}`;
+}
+
+async function requestConfiguredHint(question, answerOptions) {
+  if (typeof window === "undefined") {
+    return "";
+  }
+
+  const payload = buildHintRequest(question, answerOptions);
+
+  if (typeof window.LQC_AI_HINT_PROVIDER === "function") {
+    try {
+      const hint = await window.LQC_AI_HINT_PROVIDER(payload);
+      return String(hint || "").trim();
+    } catch (error) {
+      return "";
+    }
+  }
+
+  if (!window.LQC_AI_HINT_ENDPOINT) {
+    return "";
+  }
+
+  const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+  const timeoutId = controller
+    ? window.setTimeout(() => controller.abort(), HINT_FETCH_TIMEOUT_MS)
+    : null;
+
+  try {
+    const response = await fetch(window.LQC_AI_HINT_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload),
+      signal: controller ? controller.signal : undefined
+    });
+
+    if (!response.ok) {
+      return "";
+    }
+
+    const data = await response.json();
+    return String(data.hint || data.text || "").trim();
+  } catch (error) {
+    return "";
+  } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+  }
+}
+
+async function resolveHintText(question, answerOptions) {
+  const configuredHint = await requestConfiguredHint(question, answerOptions);
+  return configuredHint || buildLocalHint(question, answerOptions);
 }
 
 function formatDate(isoString) {
@@ -629,6 +727,8 @@ function initGamePage() {
   const quoteText = document.getElementById("quoteText");
   const answers = document.getElementById("answers");
   const gameFeedback = document.getElementById("gameFeedback");
+  const hintCard = document.getElementById("hintCard");
+  const hintText = document.getElementById("hintText");
   const scoreValue = document.getElementById("scoreValue");
   const roundValue = document.getElementById("roundValue");
   const mistakeValue = document.getElementById("mistakeValue");
@@ -645,6 +745,8 @@ function initGamePage() {
     !quoteText ||
     !answers ||
     !gameFeedback ||
+    !hintCard ||
+    !hintText ||
     !scoreValue ||
     !roundValue ||
     !mistakeValue ||
@@ -676,6 +778,9 @@ function initGamePage() {
     score: 0,
     correct: 0,
     mistakes: 0,
+    currentAnswerOptions: [],
+    hintMessage: "",
+    hintVisible: false,
     answered: false,
     finished: false
   };
@@ -685,6 +790,7 @@ function initGamePage() {
   let timeLeft = TIMER_SECONDS;
   let countdownInterval = null;
   let advanceTimeout = null;
+  let hintRequestId = 0;
 
   function clearQuestionTimers() {
     if (countdownInterval) {
@@ -696,11 +802,45 @@ function initGamePage() {
       clearTimeout(advanceTimeout);
       advanceTimeout = null;
     }
+
   }
 
   function setGameFeedback(message, state = "") {
     gameFeedback.textContent = String(message || "");
     gameFeedback.dataset.state = state;
+  }
+
+  function resetHintCard() {
+    hintCard.hidden = true;
+    hintCard.classList.remove("is-loading");
+    hintCard.classList.remove("is-visible");
+    hintText.textContent = "";
+    gameState.hintMessage = "";
+    gameState.hintVisible = false;
+  }
+
+  function showHintCard(message, loading = false) {
+    hintCard.hidden = false;
+    hintCard.classList.toggle("is-loading", loading);
+    hintCard.classList.add("is-visible");
+    hintText.textContent = String(message || "");
+  }
+
+  function maybeRevealHint() {
+    if (
+      gameState.hintVisible ||
+      gameState.answered ||
+      gameState.finished ||
+      timeLeft > HINT_SHOW_WHEN_SECONDS_LEFT
+    ) {
+      return;
+    }
+
+    gameState.hintVisible = true;
+    showHintCard(
+      gameState.hintMessage || "The AI librarian is preparing a hint...",
+      !gameState.hintMessage
+    );
   }
 
   function updateRoundProgress(forceComplete = false) {
@@ -719,10 +859,16 @@ function initGamePage() {
     if (timerBox) {
       timerBox.classList.toggle("is-warning", value <= 3);
     }
+
+    maybeRevealHint();
   }
 
   function startQuestionTimer() {
-    clearQuestionTimers();
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
+
     timeLeft = TIMER_SECONDS;
     setTimerDisplay(timeLeft);
 
@@ -755,6 +901,7 @@ function initGamePage() {
       return;
     }
 
+    resetHintCard();
     gameState.answered = true;
     const currentQuestion = gameState.questions[gameState.currentIndex];
     gameState.mistakes += 1;
@@ -794,6 +941,7 @@ function initGamePage() {
     }
 
     const currentQuestion = gameState.questions[gameState.currentIndex];
+    const currentHintId = ++hintRequestId;
 
     scoreValue.textContent = String(gameState.score);
     roundValue.textContent = String(gameState.currentIndex + 1);
@@ -817,10 +965,12 @@ function initGamePage() {
     answers.innerHTML = "";
     nextButton.hidden = true;
     endActions.hidden = true;
+    resetHintCard();
     gameState.answered = false;
     updateRoundProgress();
 
     if (currentQuestion.type === "fill") {
+      gameState.currentAnswerOptions = [];
       const input = document.createElement("input");
       input.type = "text";
       input.className = "answer-input";
@@ -844,7 +994,10 @@ function initGamePage() {
       answers.appendChild(submit);
       input.focus();
     } else {
-      buildAnswerOptions(currentQuestion.answer).forEach((option) => {
+      const answerOptions = buildAnswerOptions(currentQuestion.answer);
+      gameState.currentAnswerOptions = answerOptions;
+
+      answerOptions.forEach((option) => {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "answer-button";
@@ -853,6 +1006,18 @@ function initGamePage() {
         answers.appendChild(button);
       });
     }
+
+    resolveHintText(currentQuestion, gameState.currentAnswerOptions).then((resolvedHint) => {
+      if (currentHintId !== hintRequestId || gameState.finished) {
+        return;
+      }
+
+      gameState.hintMessage = resolvedHint || "No hint is available for this question.";
+
+      if (gameState.hintVisible) {
+        showHintCard(gameState.hintMessage, false);
+      }
+    });
 
     startQuestionTimer();
   }
@@ -864,6 +1029,7 @@ function initGamePage() {
 
     gameState.finished = true;
     clearQuestionTimers();
+    resetHintCard();
 
     if (timerBox) {
       timerBox.classList.remove("is-warning");
@@ -898,6 +1064,7 @@ function initGamePage() {
     }
 
     clearQuestionTimers();
+    resetHintCard();
     gameState.answered = true;
 
     const currentQuestion = gameState.questions[gameState.currentIndex];
