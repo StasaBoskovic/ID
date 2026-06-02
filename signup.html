@@ -1,46 +1,48 @@
 <!DOCTYPE html>
-<html lang="sr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Literary Quote Challenge | Sign Up</title>
+  <title>Literary Quote Challenge | Register</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="page">
+<body class="page page-auth">
   <main class="phone-shell">
-    <section class="screen-card">
-      <a class="back-link" href="login.html">&larr; Nazad</a>
-      <p class="topline">Literary Quote Challenge</p>
-      <h1 class="screen-title">Sign Up</h1>
-      <p class="page-copy left-copy">Kreiraj profil i uđi u igru.</p>
+    <section class="screen-card auth-card">
+      <a class="back-link" href="login.html">&larr; Back</a>
+      <p class="topline">Create account</p>
+      <h1 class="screen-title">Register and enter the challenge.</h1>
+      <p class="page-copy left-copy">
+        Create your profile to save your best runs and appear on the leaderboard.
+      </p>
 
       <form id="signupForm" class="stack-form" data-redirect="mode.html">
         <p class="form-message" id="signupMessage"></p>
 
         <label class="field">
-          <span>Korisničko ime</span>
-          <input type="text" name="username" placeholder="Odaberi korisničko ime" />
+          <span>Username</span>
+          <input type="text" name="username" placeholder="Choose a username" />
         </label>
 
         <label class="field">
-          <span>E-mail adresa</span>
-          <input type="email" name="email" placeholder="unesi@email.com" />
+          <span>Email address</span>
+          <input type="email" name="email" placeholder="enter@email.com" />
         </label>
 
         <label class="field">
-          <span>Lozinka</span>
-          <input type="password" name="password" placeholder="Kreiraj lozinku" />
+          <span>Password</span>
+          <input type="password" name="password" placeholder="Create a password" />
         </label>
 
         <label class="field">
-          <span>Potvrdi lozinku</span>
-          <input type="password" name="confirmPassword" placeholder="Ponovi lozinku" />
+          <span>Confirm password</span>
+          <input type="password" name="confirmPassword" placeholder="Repeat your password" />
         </label>
 
-        <button class="primary-button" type="submit">Prijavi se</button>
+        <button class="primary-button" type="submit">Register</button>
       </form>
 
-      <a class="guest-link" href="mode.html">Počni kao gost</a>
+      <a class="guest-link" href="mode.html">Continue as Guest</a>
     </section>
   </main>
 

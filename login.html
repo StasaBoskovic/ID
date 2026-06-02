@@ -1,43 +1,45 @@
 <!DOCTYPE html>
-<html lang="sr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Literary Quote Challenge | Log In</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="page">
+<body class="page page-auth">
   <main class="phone-shell">
-    <section class="screen-card">
-      <a class="back-link" href="index.html">&larr; Nazad</a>
-      <p class="topline">Literary Quote Challenge</p>
-      <h1 class="screen-title">Log In</h1>
-      <p class="page-copy left-copy">Unesi mejl i lozinku da nastaviš dalje.</p>
+    <section class="screen-card auth-card">
+      <a class="back-link" href="index.html">&larr; Back</a>
+      <p class="topline">Player access</p>
+      <h1 class="screen-title">Log in and continue your run.</h1>
+      <p class="page-copy left-copy">
+        Save your score, track your progress, and jump straight into the next round.
+      </p>
 
       <form id="loginForm" class="stack-form" data-redirect="mode.html">
         <p class="form-message" id="loginMessage"></p>
 
         <label class="field">
-          <span>E-mail adresa</span>
-          <input type="email" name="email" placeholder="unesi@email.com" />
+          <span>Email address</span>
+          <input type="email" name="email" placeholder="enter@email.com" />
         </label>
 
         <label class="field">
-          <span>Lozinka</span>
-          <input type="password" name="password" placeholder="Unesi lozinku" />
+          <span>Password</span>
+          <input type="password" name="password" placeholder="Enter your password" />
         </label>
 
-        <a class="text-link subtle-link" href="forgot-password.html">Zaboravio/la si lozinku?</a>
+        <a class="text-link subtle-link" href="forgot-password.html">Forgot your password?</a>
 
-        <button class="primary-button" type="submit">Uloguj se</button>
+        <button class="primary-button" type="submit">Log In</button>
       </form>
 
       <p class="inline-note">
-        Nemaš nalog?
-        <a class="text-link" href="signup.html">Prijavi se</a>
+        Don't have an account?
+        <a class="text-link" href="signup.html">Register</a>
       </p>
 
-      <a class="guest-link" href="mode.html">Počni kao gost</a>
+      <a class="guest-link" href="mode.html">Continue as Guest</a>
     </section>
   </main>
 

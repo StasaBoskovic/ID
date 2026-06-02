@@ -1,35 +1,38 @@
 <!DOCTYPE html>
-<html lang="sr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Literary Quote Challenge | Izbor nacina igre</title>
+  <title>Literary Quote Challenge | Choose Mode</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="page">
+<body class="page page-mode">
   <main class="phone-shell phone-shell-wide">
-    <section class="screen-card">
+    <section class="screen-card mode-card">
       <div class="screen-head">
         <div class="screen-head-copy">
-          <a class="back-link" href="login.html">&larr; Nazad</a>
-          <p class="topline">Literary Quote Challenge</p>
+          <a class="back-link" href="login.html">&larr; Back</a>
+          <p class="topline">Choose your mode</p>
         </div>
-        <a class="secondary-button small-button" href="leaderboard.html">Tabela rezultata</a>
+        <a class="secondary-button small-button" href="leaderboard.html">Leaderboard</a>
       </div>
-      <h1 class="screen-title">Kako želiš da igraš?</h1>
+
+      <h1 class="screen-title">How do you want to play?</h1>
       <p class="page-copy left-copy">
-        Možeš da prepustiš izbor sistemu ili da sama izabereš knjige koje želiš u igri.
+        Start with a random set of books or build your own custom library before the round begins.
       </p>
 
       <div class="choice-stack">
         <button class="choice-card" id="randomChoiceButton" type="button">
-          <span class="choice-title">Random literatura</span>
-          <span class="choice-copy">Odmah ideš na ekran igre sa nasumičnim književnim izborom.</span>
+          <span class="choice-kicker">Quick start</span>
+          <span class="choice-title">Random Mode</span>
+          <span class="choice-copy">Jump straight into the game with a mixed set of literary questions.</span>
         </button>
 
         <a class="choice-card choice-link" href="library.html">
-          <span class="choice-title">Izaberi literaturu</span>
-          <span class="choice-copy">Otvara se sledeća stranica sa knjigama koje možeš da označiš.</span>
+          <span class="choice-kicker">Custom selection</span>
+          <span class="choice-title">Pick Your Books</span>
+          <span class="choice-copy">Choose the books you want and create your own tailored round.</span>
         </a>
       </div>
     </section>
